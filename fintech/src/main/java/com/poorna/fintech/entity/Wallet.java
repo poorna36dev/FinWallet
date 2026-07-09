@@ -39,7 +39,7 @@ public class Wallet {
     @Column(name = "balance", nullable = false)
     private BigDecimal balance;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private User user;
