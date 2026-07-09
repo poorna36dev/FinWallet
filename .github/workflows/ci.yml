@@ -19,5 +19,6 @@ jobs:
           distribution: temurin
           java-version: '21'
           cache: maven
+
       - name: Build and Run Tests
-        run: ./mvnw clean test
+        run: cd fintech && ./mvnw clean test
