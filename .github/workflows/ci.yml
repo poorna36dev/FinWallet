@@ -18,3 +18,6 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
+          cache: maven
+      - name: Build and Run Tests
+        run: ./mvnw clean test
