@@ -27,3 +27,7 @@ jobs:
       - name: Build and Run Tests
         working-directory: fintech
         run: ./mvnw clean test
+
+      - name: Docker Build
+        working-directory: fintech
+        run: docker build -t fintech-app .
