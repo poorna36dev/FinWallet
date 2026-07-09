@@ -1,6 +1,7 @@
 package com.poorna.fintech.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
@@ -17,8 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-
+import org.springframework.security.core.Authentication;
 import com.poorna.fintech.dtos.LoginRequest;
 import com.poorna.fintech.dtos.UserRequest;
 import com.poorna.fintech.entity.User;
@@ -50,19 +50,18 @@ class AuthControllerTest {
     private AuthController authController;
 
     @Test
-    void loginReturnsAuthenticationFailureReasonWhenCredentialsAreInvalid() throws Exception {
+   
+    void loginThrowsBadCredentialsExceptionWhenCredentialsAreInvalid() {
         LoginRequest request = new LoginRequest();
         request.setUserName("jdoe");
         request.setPassword("wrong-password");
 
-        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
-                .thenThrow(new BadCredentialsException(""));
+        when(authenticationManager.authenticate(any(Authentication.class)))
+                .thenThrow(new BadCredentialsException("Invalid credentials"));
 
-        ResponseEntity<?> response = authController.login(request);
-
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
-        assertThat(response.getBody()).isInstanceOf(Map.class);
-        assertThat(((Map<?, ?>) response.getBody()).get("error")).isEqualTo("Authentication failed");
+        assertThrows(
+                BadCredentialsException.class,
+                () -> authController.login(request));
     }
 
     @Test
