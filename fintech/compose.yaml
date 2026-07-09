@@ -13,13 +13,15 @@ services:
 
     restart: unless-stopped
 
-  postgres:
-    image: postgres:17-alpine
+  mysql:
+    image: mysql:8.0
+    container_name: fintech-mysql
 
     environment:
-      POSTGRES_DB=fintech_db
-      POSTGRES_USER=fintech
-      POSTGRES_PASSWORD=fintech
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
 
     volumes:
       - mysql-data:/var/lib/mysql
